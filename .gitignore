@@ -1,0 +1,17 @@
+.class
+.buildpath
+.classpath
+.project
+*.iml
+bin/
+.idea/
+out/
+node_modules/
+c]
+.env
+df
+dev.bat
+jsdoc/
+docs/
+dist/
+coverage/

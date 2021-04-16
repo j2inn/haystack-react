@@ -1,0 +1,60 @@
+{
+	"name": "haystack-react",
+	"version": "2.0.6",
+	"description": "Project Haystack utilities for building React applications",
+	"main": "dist/index",
+	"scripts": {
+		"build": "tsc",
+		"clean": "rimraf ./dist",
+		"format": "eslint --ext .ts . --fix && prettier-eslint --write **/*.ts",
+		"lint": "eslint --ext .ts .",
+		"prebuild": "npm run clean",
+		"test": "npm run lint",
+		"prepack": "npm run test && npm run build",
+		"doc": "typedoc ./src --excludePrivate"
+	},
+	"keywords": [
+		"project haystack",
+		"haystack",
+		"client",
+		"react",
+		"typescript"
+	],
+	"author": "Gareth Johnson",
+	"license": "BSD-3-Clause",
+	"homepage": "https://github.com/j2inn/haystack-react",
+	"email": "support@j2inn.com",
+	"devDependencies": {
+		"@types/react": "^17.0.3",
+		"@types/react-dom": "^17.0.3",
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
+		"eslint": "^7.24.0",
+		"eslint-config-prettier": "^8.2.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"eslint-plugin-react": "^7.23.2",
+		"haystack-core": "2.0.12",
+		"haystack-nclient": "2.0.11",
+		"husky": "^4.3.5",
+		"lint-staged": "^10.5.4",
+		"prettier-eslint": "^12.0.0",
+		"prettier-eslint-cli": "^5.0.1",
+		"rimraf": "3.0.2",
+		"typedoc": "^0.20.35",
+		"typescript": "^4.2.4"
+	},
+	"dependencies": {
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2"
+	},
+	"peerDependencies": {
+		"haystack-core": "^2.0.12",
+		"haystack-nclient": "^2.0.11"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint && npm test",
+			"pre-push": "npm run lint && npm test"
+		}
+	}
+}
