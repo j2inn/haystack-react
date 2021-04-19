@@ -18,6 +18,10 @@ If you want to use units then install [haystack-units](https://github.com/j2inn/
 npm install haystack-core haystack-units haystack-nclient haystack-react
 ```
 
+## APIs
+
+Please click [here](http://j2-docs.s3-website-us-east-1.amazonaws.com/j2inn/haystack-react/index.html) for the API documentation.
+
 ## Design
 
 ### Hooks
