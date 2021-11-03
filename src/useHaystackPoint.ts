@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) 2021, J2 Innovations. All Rights Reserved
+ */
+
 import { HDict, HGrid, HNum, HRef, HVal } from 'haystack-core'
 import { useEffect, useState } from 'react'
-import { useClient } from '../client'
-import { GridRefreshWatchResult, useWatch } from '../watch'
+import { useClient } from './client'
+import { GridRefreshWatchResult, useWatch } from './watch'
 
 /**
  * A Haystack point record with a specific curVal type

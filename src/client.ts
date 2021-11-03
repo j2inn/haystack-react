@@ -85,7 +85,7 @@ export function useGrid({
 					}
 				} catch (err) {
 					if (!cancel) {
-						setError(err)
+						setError(err as Error)
 					}
 				} finally {
 					if (!cancel) {

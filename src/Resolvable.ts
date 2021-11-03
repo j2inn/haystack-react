@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2021, J2 Innovations. All Rights Reserved
+ */
+
 import { HDict, HNum, HStr, HVal, Kind, valueIsKind } from 'haystack-core'
 
 /**

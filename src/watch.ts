@@ -110,7 +110,7 @@ export function useWatch({
 					return watch
 				} catch (err) {
 					if (!cancel) {
-						setError(err)
+						setError(err as Error)
 					}
 				} finally {
 					if (!cancel) {

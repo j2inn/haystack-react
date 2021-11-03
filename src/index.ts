@@ -4,3 +4,7 @@
 
 export * from './watch'
 export * from './client'
+export * from './Resolvable'
+export * from './useHaystackPoint'
+export * from './useHaystackRecordTag'
+export * from './useResolveHaystackValue'

@@ -1,11 +1,15 @@
+/*
+ * Copyright (c) 2021, J2 Innovations. All Rights Reserved
+ */
+
 import { HDict, HVal } from 'haystack-core'
 import { second } from 'haystack-units'
 import {
 	HaystackPointWriteOptions,
 	PointWriteFunc,
 	useHaystackPoint,
-} from '../useHaystackPoint'
-import { useHaystackRecordTag } from '../useHaystackRecordTag'
+} from './useHaystackPoint'
+import { useHaystackRecordTag } from './useHaystackRecordTag'
 import {
 	isResolvableDict,
 	isResolvablePoint,
