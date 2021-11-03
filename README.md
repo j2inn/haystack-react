@@ -271,3 +271,141 @@ export const GridTable: React.FC = () => {
 	)
 }
 ```
+
+### useHaystackPoint
+
+This hook allows using the value of a point from an haystack server as a react component state.
+
+-   The hook leverages `useWatch` to retrieve a point live updated data.
+-   The hook will cause the UI to be updated automatically when an updated value is retrieved.
+
+```tsx
+export const SetpointIncrementer: React.FC = () => {
+	// One-shot reading the first point that matches the filter
+	const point = useReadByFilter('point and temp and zone and sp').grid[0]
+
+	// Using the point
+	const [pointValue, setPointValue, updatedPoint] = useHaystackPoint<HNum>(
+		point
+	)
+
+	return (
+		<div>
+			<p>{pointValue?.toString() ?? '---'}</p>
+			<button
+				onClick={() => {
+					if (setPointValue && pointValue) {
+						setPointValue(pointValue.newCopy()?.plus(HNum.make(1)))
+					}
+				}}>
+				Increment Point
+			</button>
+		</div>
+	)
+}
+```
+
+### useHaystackRecordTag
+
+This hook allows using the value of a record tag from an haystack server as a react component state.
+
+-   The hook leverages `useWatch` to retrieve the record live updated data.
+-   The hook will cause the UI to be updated automatically when an updated value is retrieved.
+
+```tsx
+export const SetpointPrecisionIncrementer: React.FC = () => {
+	// One-shot reading the first record that matches the filter
+	const record = useReadByFilter(
+		'precision and point and temp and zone and sp'
+	).grid[0]
+
+	// Using its tag
+	const [precision, setPrecision, updatedRecord] = useHaystackRecordTag<HNum>(
+		record,
+		'precision'
+	)
+
+	return (
+		<div>
+			<p>{precision?.toString() ?? '---'}</p>
+			<button
+				onClick={() => {
+					if (setPrecision && precision) {
+						setPrecision(precision.newCopy()?.plus(HNum.make(1)))
+					}
+				}}>
+				Increment Setpoint Precision
+			</button>
+		</div>
+	)
+}
+```
+
+### useResolveHaystackValue
+
+This hook allows using a value from an haystack server as a react component state.
+This hook should be used when input flexibility is required.
+It is meant to abstract how data is actually retrieved/polled/written, enabling at the same time a data driven approach.
+
+It takes a ResolvableDict that contains the record data and a meta tag that indicates how to interact with that record to poll and write an HVal.
+
+Currently a ResolvableDict can indicate one of two `resolveType` values:
+
+-   `"point"`: means that the ResolvableDict passed contains a point data and that the value that needs to be polled and written is the point value.
+-   `"tag"`: means that the ResolvableDict passed contains a record data and the value that needs to be polled and written is the value of the tag indicated respectively in the "readTag" and "writeTag" tags of the meta dict.
+
+Additional options such as the watch poll interval can be indicated directly inside the ResolvableDict meta.
+
+-   The hook leverages `useWatch` to retrieve the live updated data.
+-   The hook will cause the UI to be updated automatically when an updated value is retrieved.
+
+```tsx
+export const SetpointIncrementer: React.FC = () => {
+	// One-shot reading the first point that matches the filter
+	const [point] = useReadByFilter('point and temp and zone and sp').grid
+
+	//Adding meta data to the dict (note that this could have already been done server side)
+	const resolvableDict1 = point
+		?.newCopy()
+		.set('meta', { resolveType: 'point' }) as Resolvable<HNum>
+
+	const resolvableDict2 = point?.newCopy().set('meta', {
+		resolveType: 'tag',
+		readTag: 'precision',
+	}) as Resolvable<HNum>
+
+	// The actual state used depends on the metadata in the dict:
+	const [pointValue, setPointValue] = useResolveHaystackValue<HNum>(
+		resolvableDict1
+	)
+	const [pointPrecision, setPointPrecision] = useResolveHaystackValue<HNum>(
+		resolvableDict2
+	)
+
+	return (
+		<div>
+			<p>{pointValue?.toString() ?? '---'}</p>
+			<button
+				onClick={() => {
+					if (setPointValue && pointValue) {
+						setPointValue(pointValue.newCopy()?.plus(HNum.make(1)))
+					}
+				}}>
+				Increment Point
+			</button>
+
+			<p>{pointPrecision?.toString() ?? '---'}</p>
+			<button
+				onClick={() => {
+					if (setPointPrecision && pointPrecision) {
+						setPointPrecision(
+							pointPrecision.newCopy()?.plus(HNum.make(1))
+						)
+					}
+				}}>
+				Increment Setpoint Precision
+			</button>
+		</div>
+	)
+}
+```
