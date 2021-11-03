@@ -51,10 +51,10 @@ This hook uses a [React Context](https://reactjs.org/docs/context.html) called `
 Set up the Client Context high up in your tree of UI components. For example...
 
 ```tsx
-const client = new Client({ 
+const client = new Client({
 	base: new URL(window.location.href),
 	// Optionally specify a project. This is normally picked up from the browser's current address.
-	// project: 'demo' 
+	// project: 'demo'
 })
 
 // The 'client' object will be picked up by all components and hooks that call `useClient()` to make a network call.
@@ -62,7 +62,7 @@ const client = new Client({
 const App = (): JSX.Element => {
 	return (
 		<ClientContext.Provider value={client}>
-			<MyFancyUi/>
+			<MyFancyUi />
 		</ClientContext.Provider>
 	)
 }
@@ -71,13 +71,13 @@ const App = (): JSX.Element => {
 The client object can be configured differently if the server is not the FIN framework...
 
 ```tsx
-const client = new Client({ 
-	base: new URL(window.location.href), 
+const client = new Client({
+	base: new URL(window.location.href),
 	opsBase: 'haystack',
 	// Optionally specify a project. This is normally picked up from the browser's current address.
 	// project: 'demo',
 	// Optionally prefer Hayson over Zinc...
-	options: { headers: { accept: HAYSON_MIME_TYPE } }  
+	options: { headers: { accept: HAYSON_MIME_TYPE } },
 })
 
 // The 'client' object will be picked up by all components and hooks that call `useClient()` to make a network call.
@@ -85,7 +85,7 @@ const client = new Client({
 const App = (): JSX.Element => {
 	return (
 		<ClientContext.Provider value={client}>
-			<MyFancyUi/>
+			<MyFancyUi />
 		</ClientContext.Provider>
 	)
 }
@@ -295,7 +295,7 @@ export const SetpointIncrementer: React.FC = () => {
 			<button
 				onClick={() => {
 					if (setPointValue && pointValue) {
-						setPointValue(pointValue.newCopy()?.plus(HNum.make(1)))
+						setPointValue(pointValue.plus(HNum.make(1)))
 					}
 				}}>
 				Increment Point
@@ -331,7 +331,7 @@ export const SetpointPrecisionIncrementer: React.FC = () => {
 			<button
 				onClick={() => {
 					if (setPrecision && precision) {
-						setPrecision(precision.newCopy()?.plus(HNum.make(1)))
+						setPrecision(precision.plus(HNum.make(1)))
 					}
 				}}>
 				Increment Setpoint Precision
@@ -388,7 +388,7 @@ export const SetpointIncrementer: React.FC = () => {
 			<button
 				onClick={() => {
 					if (setPointValue && pointValue) {
-						setPointValue(pointValue.newCopy()?.plus(HNum.make(1)))
+						setPointValue(pointValue.plus(HNum.make(1)))
 					}
 				}}>
 				Increment Point
@@ -398,9 +398,7 @@ export const SetpointIncrementer: React.FC = () => {
 			<button
 				onClick={() => {
 					if (setPointPrecision && pointPrecision) {
-						setPointPrecision(
-							pointPrecision.newCopy()?.plus(HNum.make(1))
-						)
+						setPointPrecision(pointPrecision.plus(HNum.make(1)))
 					}
 				}}>
 				Increment Setpoint Precision
