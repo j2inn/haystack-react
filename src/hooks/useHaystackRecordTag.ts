@@ -71,15 +71,10 @@ function useReadHaystackRecordTag<Value extends HVal>(
 	const {
 		grid: [record],
 		isLoading,
-		error,
 	} = useWatch({
 		ids: originalRecord?.id,
 		pollRate: pollRate,
 	}) as RecordGridResult
-
-	if (error) {
-		console.error('useReadHaystackRecord() error:', error)
-	}
 
 	return isLoading
 		? [originalRecord?.get<Value>(tag), originalRecord]

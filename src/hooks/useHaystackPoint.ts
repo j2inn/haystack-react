@@ -75,15 +75,10 @@ function useReadHaystackPoint<Value extends HVal>(
 	const {
 		grid: [point],
 		isLoading,
-		error,
 	} = useWatch({
 		ids: originalPoint?.id,
 		pollRate: pollRate,
 	}) as PointGridResult<Value>
-
-	if (error) {
-		console.error('useReadHaystackPoint() error:', error)
-	}
 
 	return isLoading
 		? [originalPoint?.curVal, originalPoint]
