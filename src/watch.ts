@@ -2,7 +2,9 @@
  * Copyright (c) 2020, J2 Innovations. All Rights Reserved
  */
 
-import { useEffect, useState } from 'react'
+/* eslint prefer-const: "off" */
+
+import { useEffect, useRef, useState } from 'react'
 import { Watch, DEFAULT_POLL_RATE_SECS, Ids } from 'haystack-nclient'
 import { HGrid } from 'haystack-core'
 import { GridRefreshResult, useClient, useOnlyOps } from './client'
@@ -19,6 +21,13 @@ export interface GridRefreshWatchResult extends GridRefreshResult {
 	 * The number of times the underlying watch has updated the grid result.
 	 */
 	updates: number
+}
+
+interface WatchData {
+	grid: HGrid
+	isLoading: boolean
+	loads: number
+	error?: Error
 }
 
 /**
@@ -45,17 +54,20 @@ export function useWatch({
 	const client = useClient()
 	const ops = useOnlyOps()
 
-	const [grid, setGrid] = useState<HGrid>(new HGrid())
+	const data = useRef<WatchData>()
 
-	const [isLoading, setIsLoading] = useState(true)
-
-	let [loads, setLoads] = useState(0)
-
-	const [error, setError] = useState<Error | undefined>(undefined)
-
-	let [updates, setUpdates] = useState(0)
+	const watchData =
+		data.current ??
+		(data.current = {
+			grid: new HGrid(),
+			isLoading: true,
+			loads: 0,
+		})
 
 	const [refreshes, setRefreshes] = useState(0)
+
+	let [updates, setUpdates] = useState(0)
+	const forceUpdate = (): void => setUpdates(++updates)
 
 	useEffect(
 		(): Callback => {
@@ -63,7 +75,14 @@ export function useWatch({
 
 			async function open(): Promise<Watch | undefined> {
 				try {
-					setIsLoading(true)
+					const wasLoading = watchData.isLoading
+					watchData.isLoading = true
+
+					// If watch wasn't loading before it is now so force an
+					// update in the UI.
+					if (!wasLoading) {
+						forceUpdate()
+					}
 
 					if (!ids) {
 						ids = filter
@@ -77,9 +96,12 @@ export function useWatch({
 							return
 						}
 
-						setGrid(ids)
-						setIsLoading(false)
-						setLoads(++loads)
+						watchData.grid = ids
+						watchData.isLoading = false
+
+						// Force an update here as we already have some valid data to render before
+						// the watch is opened.
+						forceUpdate()
 					}
 
 					const watch = await (ops
@@ -101,22 +123,22 @@ export function useWatch({
 					watch.pollRate = pollRate || DEFAULT_POLL_RATE_SECS
 
 					watch.changed({
-						callback: (): void => setUpdates(++updates),
+						callback: forceUpdate,
 					})
 
-					setGrid(watch.grid)
-					setUpdates(++updates)
+					watchData.grid = watch.grid
 
 					return watch
 				} catch (err) {
 					if (!cancel) {
-						setError(err as Error)
+						watchData.error = err as Error
 					}
 				} finally {
 					if (!cancel) {
-						setIsLoading(false)
-						setLoads(++loads)
+						watchData.isLoading = false
+						++watchData.loads
 					}
+					forceUpdate()
 				}
 				return undefined
 			}
@@ -128,8 +150,8 @@ export function useWatch({
 				cancel = true
 
 				// On clean up, reset to the initial state.
-				setIsLoading(false)
-				setError(undefined)
+				watchData.isLoading = false
+				watchData.error = undefined
 
 				async function close(): Promise<void> {
 					if (promise) {
@@ -144,11 +166,11 @@ export function useWatch({
 	)
 
 	return {
-		grid,
-		isLoading,
-		loads,
-		error,
-		refresh: () => setRefreshes(refreshes + 1),
+		grid: watchData.grid,
+		isLoading: watchData.isLoading,
+		loads: watchData.loads,
+		error: watchData.error,
+		refresh: (): void => setRefreshes(refreshes + 1),
 		updates,
 	}
 }
