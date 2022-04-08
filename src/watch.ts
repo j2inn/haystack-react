@@ -120,7 +120,8 @@ export function useWatch({
 						return watch
 					}
 
-					watch.pollRate = pollRate || DEFAULT_POLL_RATE_SECS
+					watch.pollRate =
+						pollRate > 0 ? pollRate : DEFAULT_POLL_RATE_SECS
 
 					watch.changed({
 						callback: forceUpdate,
