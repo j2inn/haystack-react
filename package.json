@@ -1,6 +1,6 @@
 {
 	"name": "haystack-react",
-	"version": "3.0.2",
+	"version": "3.0.3-beta.1",
 	"description": "Project Haystack utilities for building React applications",
 	"main": "dist/index",
 	"scripts": {

@@ -2,9 +2,9 @@
  * Copyright (c) 2020, J2 Innovations. All Rights Reserved
  */
 
-/* eslint @typescript-eslint/no-explicit-any: "off" */
+/* eslint prefer-const: "off" */
 
-import { useState, useEffect, createContext, useContext } from 'react'
+import { useState, useEffect, createContext, useContext, useRef } from 'react'
 
 import { Client } from 'haystack-nclient'
 import { HGrid, HRef, HList, HFilterBuilder } from 'haystack-core'
@@ -48,6 +48,13 @@ export interface GridRefreshResult extends GridResult {
 	refresh: () => void
 }
 
+interface GridData {
+	grid: HGrid
+	isLoading: boolean
+	loads: number
+	error?: Error
+}
+
 /**
  * A hook that asynchronously resolves to a grid.
  *
@@ -60,15 +67,16 @@ export function useGrid({
 	dependencies,
 }: {
 	getGrid: () => Promise<HGrid>
-	dependencies: ReadonlyArray<any>
+	dependencies: ReadonlyArray<unknown>
 }): GridResult {
-	const [grid, setGrid] = useState<HGrid>(new HGrid())
+	const data = useRef<GridData>()
 
-	const [isLoading, setIsLoading] = useState(true)
+	const gridData =
+		data.current ??
+		(data.current = { grid: new HGrid(), isLoading: true, loads: 0 })
 
-	let [loads, setLoads] = useState(0)
-
-	const [error, setError] = useState<Error | undefined>(undefined)
+	let [updates, setUpdates] = useState(0)
+	const forceUpdate = (): void => setUpdates(++updates)
 
 	useEffect(
 		(): Callback => {
@@ -76,22 +84,32 @@ export function useGrid({
 
 			async function doGetGrid(): Promise<void> {
 				try {
-					setIsLoading(true)
+					const wasLoading = gridData.isLoading
+					gridData.isLoading = true
+
+					// If a grid wasn't loading before it is now so force an
+					// update in the UI.
+					if (!wasLoading) {
+						forceUpdate()
+					}
 
 					const grid = await getGrid()
 
 					if (!cancel) {
-						setGrid(grid)
+						gridData.grid = grid
 					}
 				} catch (err) {
 					if (!cancel) {
-						setError(err as Error)
+						gridData.error = err as Error
 					}
 				} finally {
 					if (!cancel) {
-						setLoads(++loads)
-						setIsLoading(false)
+						++gridData.loads
+						gridData.isLoading = false
 					}
+
+					// Force an update after everything has completed.
+					forceUpdate()
 				}
 			}
 
@@ -99,19 +117,14 @@ export function useGrid({
 
 			return (): void => {
 				cancel = true
-				setIsLoading(false)
-				setError(undefined)
+				gridData.isLoading = false
+				gridData.error = undefined
 			}
 		},
 		dependencies // Effect re-runs if any of these parameters change.
 	)
 
-	return {
-		grid,
-		isLoading,
-		loads,
-		error,
-	}
+	return gridData
 }
 
 /**
