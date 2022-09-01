@@ -35,7 +35,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-react": "^7.31.1",
 		"haystack-core": "^2.0.37",
-		"haystack-nclient": "^3.0.26",
+		"haystack-nclient": "^3.0.27",
 		"haystack-units": "^1.0.19",
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
@@ -51,7 +51,7 @@
 	},
 	"peerDependencies": {
 		"haystack-core": "^2.0.37",
-		"haystack-nclient": "^3.0.26",
+		"haystack-nclient": "^3.0.27",
 		"haystack-units": "^1.0.19"
 	},
 	"husky": {
