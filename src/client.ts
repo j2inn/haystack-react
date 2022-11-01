@@ -132,7 +132,7 @@ export function useGrid({
  */
 export const ClientContext = createContext<Client>(
 	new Client({
-		base: new URL(window.location.href),
+		base: new URL(globalThis?.window?.location.href || 'http://localhost'),
 	})
 )
 ClientContext.displayName = 'Client'
