@@ -34,9 +34,9 @@
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-react": "^7.31.1",
-		"haystack-core": "^2.0.40",
-		"haystack-nclient": "^3.0.29",
-		"haystack-units": "^1.0.21",
+		"haystack-core": "^2.0.43",
+		"haystack-nclient": "^3.0.30",
+		"haystack-units": "^1.0.22",
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
 		"prettier-eslint": "^15.0.1",
@@ -50,9 +50,9 @@
 		"react-dom": "^18.2.0"
 	},
 	"peerDependencies": {
-		"haystack-core": "^2.0.40",
-		"haystack-nclient": "^3.0.29",
-		"haystack-units": "^1.0.21"
+		"haystack-core": "^2.0.43",
+		"haystack-nclient": "^3.0.30",
+		"haystack-units": "^1.0.22"
 	},
 	"husky": {
 		"hooks": {
