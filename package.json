@@ -26,16 +26,16 @@
 	"homepage": "https://github.com/j2inn/haystack-react",
 	"email": "support@j2inn.com",
 	"devDependencies": {
-		"@types/react": "^18.0.17",
-		"@types/react-dom": "^18.0.6",
+		"@types/react": "^18.0.28",
+		"@types/react-dom": "^18.0.10",
 		"@typescript-eslint/eslint-plugin": "^5.36.0",
 		"@typescript-eslint/parser": "^5.36.0",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-prettier": "^4.2.1",
 		"eslint-plugin-react": "^7.31.1",
-		"haystack-core": "^2.0.43",
-		"haystack-nclient": "^3.0.30",
+		"haystack-core": "^2.0.45",
+		"haystack-nclient": "^3.0.32",
 		"haystack-units": "^1.0.22",
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
@@ -50,8 +50,8 @@
 		"react-dom": "^18.2.0"
 	},
 	"peerDependencies": {
-		"haystack-core": "^2.0.43",
-		"haystack-nclient": "^3.0.30",
+		"haystack-core": "^2.0.45",
+		"haystack-nclient": "^3.0.32",
 		"haystack-units": "^1.0.22"
 	},
 	"husky": {
