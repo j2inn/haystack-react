@@ -43,9 +43,9 @@
 		"typescript": "^4.8.2"
 	},
 	"dependencies": {
-		"haystack-core": "^2.0.46",
-		"haystack-nclient": "^3.0.33",
-		"haystack-units": "^1.0.24",
+		"haystack-core": "^2.0.50",
+		"haystack-nclient": "^3.0.38",
+		"haystack-units": "^1.0.25",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
