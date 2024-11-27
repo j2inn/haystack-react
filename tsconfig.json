@@ -21,6 +21,7 @@
 		"declaration": true,
 		"baseUrl": ".",
 		"experimentalDecorators": true,
+		"skipLibCheck": true,
 		"paths": {
 			"*": ["node_modules/*", "src/types/*"]
 		}
